@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LoginDialog</class>
+ <widget class="QDialog" name="LoginDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>512</width>
+    <height>497</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QDialog{
+    background-color: #646464;
+}
+
+
+#LoginDialog QPushButton {
+color: #333;
+border: 2px solid #555;
+border-radius: 11px;
+padding: 5px;
+background: qradialgradient(cx: 0.3, cy: -0.4,
+fx: 0.3, fy: -0.4,
+radius: 1.35, stop: 0 #fff, stop: 1 #888);
+min-width: 80px;
+}
+
+#LoginDialog QPushButton:hover {
+background: qradialgradient(cx: 0.3, cy: -0.4,
+fx: 0.3, fy: -0.4,
+radius: 1.35, stop: 0 #fff, stop: 1 #bbb);
+}
+
+#LoginDialog QPushButton:pressed {
+background: qradialgradient(cx: 0.4, cy: -0.1,
+fx: 0.4, fy: -0.1,
+radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
+}
+
+QMessageBox QPushButton {
+color: #333;
+border: 2px solid #555;
+border-radius: 11px;
+padding: 5px;
+background: qradialgradient(cx: 0.3, cy: -0.4,
+fx: 0.3, fy: -0.4,
+radius: 1.35, stop: 0 #fff, stop: 1 #888);
+min-width: 80px;
+}
+
+QMessageBox  {
+color: #333;
+border: 2px solid #555;
+background: qradialgradient(cx: 0.3, cy: -0.4,
+fx: 0.3, fy: -0.4,
+radius: 1.35, stop: 0 #fff, stop: 1 #888);
+font: 
+}
+
+
+
+</string>
+  </property>
+  <widget class="QPushButton" name="quit_button">
+   <property name="geometry">
+    <rect>
+     <x>270</x>
+     <y>410</y>
+     <width>211</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri Light</family>
+     <pointsize>14</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="text">
+    <string>Wyjdź</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="login_button">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>410</y>
+     <width>211</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri Light</family>
+     <pointsize>16</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::StrongFocus</enum>
+   </property>
+   <property name="text">
+    <string>Zaloguj</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_user">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>230</y>
+     <width>61</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_password">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>300</y>
+     <width>61</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_logo">
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>10</y>
+     <width>241</width>
+     <height>191</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="login_edit">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>230</y>
+     <width>281</width>
+     <height>51</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="password_edit">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>300</y>
+     <width>281</width>
+     <height>51</height>
+    </rect>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
