@@ -22,7 +22,7 @@ public slots:
         {
             db = QSqlDatabase::addDatabase("QMYSQL");
             db.setHostName("127.0.0.1");  // host
-            db.setDatabaseName("serwis_v3"); // database
+            db.setDatabaseName("serwis_v6"); // database
             db.setUserName(login);        // user
             db.setPassword(password);     // password
 

@@ -21,7 +21,7 @@
 
 #LoginDialog QPushButton {
 color: #333;
-border: 2px solid #555;
+border: 2px solid rgb(8,142,140);
 border-radius: 11px;
 padding: 5px;
 background: qradialgradient(cx: 0.3, cy: -0.4,

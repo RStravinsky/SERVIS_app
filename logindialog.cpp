@@ -7,7 +7,6 @@ LoginDialog::LoginDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
-
     QFont font("Calibri Light", 16, QFont::Bold ,false);
 
     ui->password_edit->setFont(font);
