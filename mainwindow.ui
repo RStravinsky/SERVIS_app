@@ -617,14 +617,14 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
     background-color: #646464;
     padding: 4px;
     border: 1px solid #fffff8;
-    font-size: 12pt;
+    /*font-size: 12pt;*/
 }
 
 #stackedWidget QTableView {
     background-color: #333333;
     color:#fffff8;
     gridline-color: #fffff8;
-    font-size: 12pt;
+   /* font-size: 12pt;*/
 	border: 2px solid #555;
 	border-radius: 11px;
 	padding: 5px;
@@ -660,7 +660,14 @@ stop: 0 rgba(8, 140, 142, 255), stop: 0.5 rgba(8, 140, 142, 255), stop:1 rgba(10
 height: 20px;
 subcontrol-position: top;
 subcontrol-origin: margin;
-}</string>
+}
+
+
+
+</string>
+      </property>
+      <property name="currentIndex">
+       <number>0</number>
       </property>
       <widget class="QWidget" name="page_view">
        <property name="sizePolicy">
@@ -698,9 +705,9 @@ fx: 0.4, fy: -0.1,
 radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
 }</string>
        </property>
-       <layout class="QGridLayout" name="gridLayout_3" rowstretch="1,1,20" columnstretch="5,25,5">
+       <layout class="QGridLayout" name="gridLayout_3" rowstretch="1,1,20" columnstretch="4,25,3">
         <item row="2" column="2">
-         <layout class="QVBoxLayout" name="verticalLayout_BUTTONS" stretch="2,2,0,1,1,1,1,1,1,1,1,1,1,1,2,2">
+         <layout class="QVBoxLayout" name="verticalLayout_BUTTONS" stretch="2,2,0,1,1,1,1,1,1,1,1,1,2,2">
           <item>
            <widget class="QPushButton" name="ReturnButton_VIEW">
             <property name="sizePolicy">
@@ -978,48 +985,6 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_10">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="font">
-             <font>
-              <family>Calibri Light</family>
-              <pointsize>11</pointsize>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_11">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="font">
-             <font>
-              <family>Calibri Light</family>
-              <pointsize>11</pointsize>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item>
            <spacer name="verticalSpacer_4">
             <property name="orientation">
              <enum>Qt::Vertical</enum>
@@ -1075,6 +1040,12 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
             <property name="text">
              <string>ZATWIERDŹ</string>
             </property>
+            <property name="autoDefault">
+             <bool>false</bool>
+            </property>
+            <property name="default">
+             <bool>false</bool>
+            </property>
            </widget>
           </item>
          </layout>
@@ -1112,6 +1083,9 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
             </property>
             <property name="resizeMode">
              <enum>QListView::Adjust</enum>
+            </property>
+            <property name="viewMode">
+             <enum>QListView::ListMode</enum>
             </property>
             <item>
              <property name="text">
@@ -1225,21 +1199,6 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
               </font>
              </property>
             </item>
-            <item>
-             <property name="text">
-              <string/>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string/>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string/>
-             </property>
-            </item>
            </widget>
           </item>
           <item>
@@ -1298,9 +1257,9 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
 }</string>
             </property>
             <property name="currentIndex">
-             <number>0</number>
+             <number>3</number>
             </property>
-            <widget class="QWidget" name="page_3">
+            <widget class="QWidget" name="page_SEKTOR">
              <widget class="QCheckBox" name="checkBox_miejsca_SEKTOR">
               <property name="geometry">
                <rect>
@@ -1360,7 +1319,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
               </property>
              </widget>
             </widget>
-            <widget class="QWidget" name="page_4">
+            <widget class="QWidget" name="page_MIEJSCA">
              <widget class="QCheckBox" name="checkBox_sektor_MIEJSCA">
               <property name="geometry">
                <rect>
@@ -1415,7 +1374,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
                </font>
               </property>
               <property name="text">
-               <string>Części</string>
+               <string>Maszyny</string>
               </property>
              </widget>
              <widget class="QCheckBox" name="checkBox_zlecenia_MIEJSCA">
@@ -1435,6 +1394,459 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
               </property>
               <property name="text">
                <string>Zlecenia</string>
+              </property>
+             </widget>
+            </widget>
+            <widget class="QWidget" name="page_DANEOSOBOWE">
+             <widget class="QCheckBox" name="checkBox_DANEOSOBOWE">
+              <property name="geometry">
+               <rect>
+                <x>20</x>
+                <y>20</y>
+                <width>91</width>
+                <height>25</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <family>Calibri Light</family>
+                <pointsize>14</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>BRAK</string>
+              </property>
+             </widget>
+            </widget>
+            <widget class="QWidget" name="page_MASZYNY">
+             <widget class="QCheckBox" name="checkBox_sektor_MASZYNY">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>30</y>
+                <width>91</width>
+                <height>25</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <family>Calibri Light</family>
+                <pointsize>14</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Sektory</string>
+              </property>
+             </widget>
+             <widget class="QCheckBox" name="checkBox_miejsca_MASZYNY">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>60</y>
+                <width>91</width>
+                <height>25</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <family>Calibri Light</family>
+                <pointsize>14</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Miejsca</string>
+              </property>
+             </widget>
+             <widget class="QCheckBox" name="checkBox_daneosobowe_MASZYNY">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>90</y>
+                <width>161</width>
+                <height>25</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <family>Calibri Light</family>
+                <pointsize>14</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Dane osobowe</string>
+              </property>
+             </widget>
+             <widget class="QCheckBox" name="checkBox_zlecenia_MASZYNY">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>120</y>
+                <width>111</width>
+                <height>25</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <family>Calibri Light</family>
+                <pointsize>14</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Zlecenia</string>
+              </property>
+             </widget>
+             <widget class="QCheckBox" name="checkBox_konkurencja_MASZYNY">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>150</y>
+                <width>121</width>
+                <height>25</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <family>Calibri Light</family>
+                <pointsize>14</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Konkurencja</string>
+              </property>
+             </widget>
+             <widget class="QCheckBox" name="checkBox_kooperant_MASZYNY">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>180</y>
+                <width>181</width>
+                <height>25</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <family>Calibri Light</family>
+                <pointsize>14</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Wykaz kooperantów</string>
+              </property>
+             </widget>
+             <widget class="QCheckBox" name="checkBox_raporty_MASZYNY">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>210</y>
+                <width>171</width>
+                <height>25</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <family>Calibri Light</family>
+                <pointsize>14</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Raporty serwisowe</string>
+              </property>
+             </widget>
+             <widget class="QCheckBox" name="checkBox_zgloszenia_MASZYNY">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>240</y>
+                <width>201</width>
+                <height>25</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <family>Calibri Light</family>
+                <pointsize>14</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Zgłoszenia serwisowe</string>
+              </property>
+             </widget>
+             <widget class="QCheckBox" name="checkBox_czesci_MASZYNY">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>270</y>
+                <width>111</width>
+                <height>25</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <family>Calibri Light</family>
+                <pointsize>14</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Części</string>
+              </property>
+             </widget>
+            </widget>
+            <widget class="QWidget" name="page_ZLECENIA">
+             <widget class="QCheckBox" name="checkBox_maszyny_ZLECENIA">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>30</y>
+                <width>111</width>
+                <height>25</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <family>Calibri Light</family>
+                <pointsize>14</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Maszyny</string>
+              </property>
+             </widget>
+             <widget class="QCheckBox" name="checkBox_kooperant_ZLECENIA">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>70</y>
+                <width>181</width>
+                <height>25</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <family>Calibri Light</family>
+                <pointsize>14</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Wykaz kooperantów</string>
+              </property>
+             </widget>
+            </widget>
+            <widget class="QWidget" name="page_KONKURENCJA">
+             <widget class="QCheckBox" name="checkBox_KONKURENCJA">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>30</y>
+                <width>111</width>
+                <height>25</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <family>Calibri Light</family>
+                <pointsize>14</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>BRAK</string>
+              </property>
+             </widget>
+            </widget>
+            <widget class="QWidget" name="page_KOOPERANT">
+             <widget class="QCheckBox" name="checkBox_daneosobowe_KOOPERANT">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>30</y>
+                <width>141</width>
+                <height>25</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <family>Calibri Light</family>
+                <pointsize>14</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Dane osobowe</string>
+              </property>
+             </widget>
+             <widget class="QCheckBox" name="checkBox_maszyny_KOOPERANT">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>70</y>
+                <width>111</width>
+                <height>25</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <family>Calibri Light</family>
+                <pointsize>14</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Maszyny</string>
+              </property>
+             </widget>
+             <widget class="QCheckBox" name="checkBox_czesci_KOOPERANT">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>110</y>
+                <width>111</width>
+                <height>25</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <family>Calibri Light</family>
+                <pointsize>14</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Części</string>
+              </property>
+             </widget>
+            </widget>
+            <widget class="QWidget" name="page_RAPORT">
+             <widget class="QCheckBox" name="checkBox_maszyny_RAPORT">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>30</y>
+                <width>111</width>
+                <height>25</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <family>Calibri Light</family>
+                <pointsize>14</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Maszyny</string>
+              </property>
+             </widget>
+             <widget class="QCheckBox" name="checkBox_zgoszenia_RAPORT">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>70</y>
+                <width>191</width>
+                <height>25</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <family>Calibri Light</family>
+                <pointsize>14</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Zgłoszenia serwisowe</string>
+              </property>
+             </widget>
+            </widget>
+            <widget class="QWidget" name="page_ZGLOSZENIA">
+             <widget class="QCheckBox" name="checkBox_maszyny_ZGLOSZENIA">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>30</y>
+                <width>171</width>
+                <height>25</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <family>Calibri Light</family>
+                <pointsize>14</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Maszyny</string>
+              </property>
+             </widget>
+             <widget class="QCheckBox" name="checkBox_kooperant_ZGLOSZENIA">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>70</y>
+                <width>181</width>
+                <height>25</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <family>Calibri Light</family>
+                <pointsize>14</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Wykaz kooperantów</string>
+              </property>
+             </widget>
+             <widget class="QCheckBox" name="checkBox_raporty_ZGLOSZENIA">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>110</y>
+                <width>171</width>
+                <height>25</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <family>Calibri Light</family>
+                <pointsize>14</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Raporty serwisowe</string>
+              </property>
+             </widget>
+            </widget>
+            <widget class="QWidget" name="page_CZESCI">
+             <widget class="QCheckBox" name="checkBox_maszyny_CZESCI">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>30</y>
+                <width>111</width>
+                <height>25</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <family>Calibri Light</family>
+                <pointsize>14</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Maszyny</string>
+              </property>
+             </widget>
+             <widget class="QCheckBox" name="checkBox_kooperant_CZESCI">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>70</y>
+                <width>181</width>
+                <height>25</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <family>Calibri Light</family>
+                <pointsize>14</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Wykaz kooperantów</string>
               </property>
              </widget>
             </widget>
@@ -1480,7 +1892,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
                 <property name="minimumSize">
                  <size>
                   <width>0</width>
-                  <height>0</height>
+                  <height>10</height>
                  </size>
                 </property>
                 <property name="font">
@@ -1548,7 +1960,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
                 <property name="minimumSize">
                  <size>
                   <width>0</width>
-                  <height>0</height>
+                  <height>10</height>
                  </size>
                 </property>
                 <property name="font">
@@ -1686,7 +2098,10 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
 }</string>
             </property>
             <property name="text">
-             <string>dotyczy całości</string>
+             <string>Wielkość liter ma znaczenie</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -1857,35 +2272,36 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
             <height>0</height>
            </size>
           </property>
-         </widget>
-        </item>
-        <item row="0" column="2">
-         <widget class="QLabel" name="label_TEST">
-          <property name="minimumSize">
-           <size>
-            <width>94</width>
-            <height>0</height>
-           </size>
+          <property name="font">
+           <font>
+            <family>Calibri Light</family>
+            <pointsize>14</pointsize>
+            <weight>75</weight>
+            <italic>false</italic>
+            <bold>true</bold>
+           </font>
           </property>
-          <property name="text">
-           <string>TextLabel</string>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
           </property>
-         </widget>
-        </item>
-        <item row="1" column="2">
-         <widget class="QListWidget" name="listWidget">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
+          <property name="frameShadow">
+           <enum>QFrame::Sunken</enum>
           </property>
-          <property name="minimumSize">
-           <size>
-            <width>94</width>
-            <height>35</height>
-           </size>
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAsNeeded</enum>
           </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAsNeeded</enum>
+          </property>
+          <attribute name="horizontalHeaderDefaultSectionSize">
+           <number>150</number>
+          </attribute>
+          <attribute name="horizontalHeaderHighlightSections">
+           <bool>true</bool>
+          </attribute>
+          <attribute name="horizontalHeaderMinimumSectionSize">
+           <number>147</number>
+          </attribute>
          </widget>
         </item>
        </layout>

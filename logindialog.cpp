@@ -42,11 +42,7 @@ void LoginDialog::on_login_button_clicked()
     username=ui->login_edit->text();
     password=ui->password_edit->text();
 
-    emit sendAccess(username,password);
-
-    connection(username,password);
-
-    if (!db.open()) {
+    if (!connection(username,password)) {
         QMessageBox::information(this,"Informacja", "Nie uzyskano dostępu.");
         ui->login_edit->setText("");
         ui->password_edit->setText("");
@@ -55,6 +51,7 @@ void LoginDialog::on_login_button_clicked()
 
     else {
         QMessageBox::information(this,"Informacja","Uzyskano dostęp.");
+        emit sendAccess(username,password);
         LoginDialog::accept();
     }
 }

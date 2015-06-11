@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include "logindialog.h"
+#include "qspreadsheetheaderview.h"
 #include <QMainWindow>
 #include <QProgressBar>
 #include <QPushButton>
@@ -9,7 +10,6 @@
 #include <QImage>
 #include <QLabel>
 #include <QProcess>
-#include <QAction>
 #include <QDebug>
 #include <QSql>
 #include <QTableWidget>
@@ -20,7 +20,6 @@
 #include <QThread>
 #include <QSqlQuery>
 #include <QSqlError>
-#include <QButtonGroup>
 #include <string>
 #include <stdio.h>
 #include <QSqlRelationalDelegate>
@@ -28,8 +27,7 @@
 #include <QRect>
 #include <QFontMetrics>
 #include <algorithm>
-#include <QItemSelectionModel>
-
+#include <QHeaderView>
 
 namespace Ui {
 class MainWindow;
@@ -43,18 +41,14 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-    QString root;
-    QString sigmasa;
     bool add_table_active;
     bool access;
     bool sumbit_view;
     bool search_for_all;
+
+    int column_additional;
+    int column_all;
     static int const EXIT_CODE_REBOOT=-123456789;
-
-    QSqlTableModel * model;
-    QSortFilterProxyModel * proxy;
-
-    QComboBox * comboBox_column_VIEW;
 
     /* The initial number of columns */
     enum KOLUMN
@@ -79,7 +73,7 @@ public:
     {
         Sektory_idx=0,
         Miejsca_idx=1,
-        Pracownicy_idx=2,
+        Daneosobowe_idx=2,
         Maszyny_idx=3,
         Zlecenia_idx=4,
         Konkurencja_idx=5,
@@ -87,17 +81,24 @@ public:
         RaportySerwisowe_idx=7,
         ZgloszeniaSerwisowe_idx=8,
         Czesci_idx=9,
-        Klienci_idx=10,
     };
 
     QString main_table;
-    QString main_view;
-    int column_additional;
-    int column_all;
+    QString main_view;    
+    QString view;
     QString * dynamic_table;
+    QString root;
+    QString sigmasa;
+    QString last_error;
     static const QString Sektor_checklist[3];
     static const QString Miejsca_checklist[4];
-    QString view;
+    static const QString Maszyny_checklist[9];
+    static const QString Daneosobowe_checklist[];
+    static const QString Zlecenia_checklist[2];
+    static const QString Wykazkooperantow_checklist[3];
+    static const QString Raportyserwisowe_checklist[2];
+    static const QString Zgloszeniaserwisowe_checklist[3];
+    static const QString Czesci_checklist[2];
 
     void checkbox_select(bool checked, QString tableName);
     int before_column_additional;
@@ -110,17 +111,16 @@ public:
     void View_button_visible();
     void Clear_VIEW();
     void clear_add_button();
-    QItemSelectionModel *sm;
-
-
-
-
+    QString get_add_button_name(QString button_name);
+    void create_model(QString view);
+    QSpreadsheetHeaderView * header;
+    QSortFilterProxyModel * proxy;
 
 public slots:
     void receiveAccess(QString login, QString password);
     void info_button();
     void combobox_selected_column(int index);
-    void column_change(QModelIndex one,QModelIndex two);
+    void filterRegExpChanged();
 
 private slots:
     void on_listWidget_VIEW_itemPressed(QListWidgetItem *item);
@@ -139,31 +139,43 @@ private slots:
     void on_pushButton_clicked();
     void on_pushButton_2_clicked();
     void on_pushButton_3_clicked();
-    void on_lineEdit_Filtr_VIEW_textChanged(const QString &arg1);
+    //void on_lineEdit_Filtr_VIEW_textChanged(const QString &arg1);
     void on_SubmitFilterbutton_VIEW_clicked();
     void on_ClearFilterbutton_VIEW_clicked();
     void on_ClearSearchbutton_VIEW_clicked();
-
     void on_pushButton_4_clicked();
-
     void on_pushButton_5_clicked();
-
     void on_pushButton_6_clicked();
-
     void on_pushButton_7_clicked();
-
     void on_pushButton_8_clicked();
-
     void on_pushButton_9_clicked();
-
-    void on_pushButton_10_clicked();
-
-    void on_pushButton_11_clicked();
-
     void on_ReturnButton_VIEW_clicked();
+    //void on_checkBox_clicked(bool checked);
+    void on_checkBox_czesci_MASZYNY_clicked(bool checked);
+    void on_checkBox_daneosobowe_MASZYNY_clicked(bool checked);
+    void on_checkBox_konkurencja_MASZYNY_clicked(bool checked);
+    void on_checkBox_kooperant_MASZYNY_clicked(bool checked);
+    void on_checkBox_miejsca_MASZYNY_clicked(bool checked);
+    void on_checkBox_raporty_MASZYNY_clicked(bool checked);
+    void on_checkBox_sektor_MASZYNY_clicked(bool checked);
+    void on_checkBox_zgloszenia_MASZYNY_clicked(bool checked);
+    void on_checkBox_zlecenia_MASZYNY_clicked(bool checked);
+    void on_checkBox_kooperant_ZLECENIA_clicked(bool checked);
+    void on_checkBox_maszyny_ZLECENIA_clicked(bool checked);
+    void on_checkBox_czesci_KOOPERANT_clicked(bool checked);
+    void on_checkBox_daneosobowe_KOOPERANT_clicked(bool checked);
+    void on_checkBox_maszyny_KOOPERANT_clicked(bool checked);
+    void on_checkBox_maszyny_RAPORT_clicked(bool checked);
+    void on_checkBox_zgoszenia_RAPORT_clicked(bool checked);
+    void on_checkBox_kooperant_ZGLOSZENIA_clicked(bool checked);
+    void on_checkBox_maszyny_ZGLOSZENIA_clicked(bool checked);
+    void on_checkBox_raporty_ZGLOSZENIA_clicked(bool checked);
+    void on_checkBox_kooperant_CZESCI_clicked(bool checked);
+    void on_checkBox_maszyny_CZESCI_clicked(bool checked);
 
-    void on_checkBox_clicked(bool checked);
 
+
+    //void on_checkBox_clicked();
 
 private:
     Ui::MainWindow *ui;
@@ -171,9 +183,13 @@ private:
     QPushButton *Statbutton;
     QLabel* Statlabel;
     QLabel* INFOlabel;
-    QString last_error;
+    QSqlTableModel * model;
+    QComboBox * comboBox_column_VIEW;
     bool eventFilter(QObject *obj, QEvent *event);
     void resizeEvent(QResizeEvent* event);
+
+protected:
+    void keyPressEvent(QKeyEvent* pe);
 
 };
 

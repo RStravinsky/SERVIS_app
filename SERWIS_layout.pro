@@ -14,10 +14,12 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    logindialog.cpp
+    logindialog.cpp \
+    qspreadsheetheaderview.cpp
 
 HEADERS  += mainwindow.h \
-    logindialog.h
+    logindialog.h \
+    qspreadsheetheaderview.h
 
 FORMS    += mainwindow.ui \
     logindialog.ui

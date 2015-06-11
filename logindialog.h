@@ -17,7 +17,7 @@ class LoginDialog : public QDialog
 {
     Q_OBJECT
 
-public slots:
+public:
     bool connection(QString& login,QString& password){
         {
             db = QSqlDatabase::addDatabase("QMYSQL");
@@ -38,14 +38,12 @@ public slots:
 
     void closeDB(){
         db.close();
-        QSqlDatabase::removeDatabase("sakila");
+        QSqlDatabase::removeDatabase("serwis_v6");
     }
 
 public:
     explicit LoginDialog(QWidget *parent = 0);
     ~LoginDialog();
-    QString username;
-    QString password;
     QSqlDatabase db;
 
 signals:
@@ -58,6 +56,8 @@ private slots:
 private:
     Ui::LoginDialog *ui;
     bool eventFilter(QObject *obj, QEvent *event);
+    QString username;
+    QString password;
 };
 
 #endif // LOGINDIALOG_H

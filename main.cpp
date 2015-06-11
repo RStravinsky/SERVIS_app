@@ -7,6 +7,7 @@
 #include <QThread>
 #include <QDesktopWidget>
 
+
 int main(int argc, char *argv[])
 {
     int currentExitCode = 0;
@@ -15,7 +16,6 @@ int main(int argc, char *argv[])
     {
             QApplication a(argc, argv);
             a.setStyle("fusion");
-
 
             QFont font("Calibri Light", 12, QFont::Light ,false);
             QFont font_main("Calibri Light", 10, QFont::Light ,false);
