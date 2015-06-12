@@ -56,15 +56,14 @@ public:
         BRAK=0,
         Sektory=1,
         Miejsca=4,
-        Pracownicy=5,
+        Daneosobowe=5,
         Maszyny=6,
         Zlecenia=5,
         Konkurencja=2,
         WykazKooperantow=3,
-        RaportySerwisowe=4,
-        ZgloszeniaSerwisowe=5,
+        RaportySerwisowe=6,
+        ZgloszeniaSerwisowe=6,
         Czesci=5,
-        Klienci=5,
     };
     KOLUMN column_const;
 

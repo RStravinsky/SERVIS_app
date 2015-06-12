@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 
 #define DEBUG_ACTIVE true
+#define MAX_COLUMNS  23
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -169,9 +170,6 @@ MainWindow::~MainWindow()
 {
     LoginDialog login;
     login.closeDB();
-    delete proxy;
-    delete model;
-    delete comboBox_column_VIEW;
     delete ui;
 }
 
@@ -609,41 +607,49 @@ void MainWindow::on_listWidget_VIEW_itemPressed(QListWidgetItem *item)
     {
         ui->stackedWidget_2->setCurrentIndex(Sektory_idx);
         main_table = "Sektory";
+        column_const = Sektory;
     }
     else if(ui->listWidget_VIEW->item(Miejsca_idx)==item)
     {
         ui->stackedWidget_2->setCurrentIndex(Miejsca_idx);
         main_table = "Miejsca";
+        column_const = Miejsca;
     }
     else if(ui->listWidget_VIEW->item(Daneosobowe_idx)==item)
     {
       ui->stackedWidget_2->setCurrentIndex(Daneosobowe_idx);
       main_table = "Daneosobowe";
+      column_const = Daneosobowe;
     }
     else if(ui->listWidget_VIEW->item(Maszyny_idx)==item)
     {
       ui->stackedWidget_2->setCurrentIndex(Maszyny_idx);
       main_table = "Maszyny";
+      column_all=Maszyny;
     }
     else if(ui->listWidget_VIEW->item(Zlecenia_idx)==item)
     {
       ui->stackedWidget_2->setCurrentIndex(Zlecenia_idx);
       main_table = "Zlecenia";
+      column_all=Zlecenia;
     }
     else if(ui->listWidget_VIEW->item(Konkurencja_idx)==item)
     {
       ui->stackedWidget_2->setCurrentIndex(Konkurencja_idx);
       main_table = "Konkurencja";
+      column_all=Konkurencja;
     }
     else if(ui->listWidget_VIEW->item(WykazKooperantow_idx)==item)
     {
       ui->stackedWidget_2->setCurrentIndex(WykazKooperantow_idx);
       main_table = "Wykazkooperantow";
+      column_all=WykazKooperantow;
     }
     else if(ui->listWidget_VIEW->item(RaportySerwisowe_idx)==item)
     {
       ui->stackedWidget_2->setCurrentIndex(RaportySerwisowe_idx);
       main_table = "Raportyserwisowe";
+      column_const=RaportySerwisowe;
     }
     else if(ui->listWidget_VIEW->item(ZgloszeniaSerwisowe_idx)==item)
     {
@@ -655,6 +661,7 @@ void MainWindow::on_listWidget_VIEW_itemPressed(QListWidgetItem *item)
     {
       ui->stackedWidget_2->setCurrentIndex(Czesci_idx);
       main_table = "Czesci";
+      column_const=Czesci;
     }
 
 #if (DEBUG_ACTIVE==true)
@@ -872,6 +879,8 @@ void MainWindow::Clear_VIEW()
      {
          model->clear();
          proxy->clear();
+         proxy=NULL;
+         model=NULL;
          delete proxy;
          delete model;
      }
@@ -1083,13 +1092,20 @@ void MainWindow::create_model(QString view)
     proxy->setFilterKeyColumn(-1);
     proxy->setDynamicSortFilter(true);
     ui->tableView->setModel(proxy);
-    header = new QSpreadsheetHeaderView(Qt::Horizontal, this);
+    header = new QSpreadsheetHeaderView(Qt::Horizontal, 2, this);
     ui->tableView->setHorizontalHeader(header);
     ui->tableView->horizontalHeader()->setVisible(true);
     ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     ui->tableView->verticalHeader()->setFixedWidth(50);
     ui->tableView->horizontalHeader()->setFixedHeight(30);
+    for(int i=0;i<4;i++)
+    {
+        if(i<2)ui->tableView->setColumnHidden(i,false);
+        else if(i>=2) ui->tableView->setColumnHidden(i,true);
+    }
+
+
 }
 
 // Fulfillment of a dynamic array using an constant array
@@ -1100,6 +1116,7 @@ void MainWindow::FillArray(QString *& Array, const QString * Array_checklist, in
     {
         newArray[i]=Array_checklist[i];
     }
+    Array=NULL;
     delete[] Array;
     Array=newArray;
 
@@ -1118,6 +1135,7 @@ void MainWindow::ClearArray(QString *& Array)
 {
   QString * newArray = new QString[1];
   newArray[0]="TEST";
+  Array=NULL;
   delete[] Array;
   Array=newArray;
 
@@ -1172,7 +1190,7 @@ void MainWindow::ResizeArray(QString *&Array, int size, int newsize, QString tab
 
 
       }
-
+    Array=NULL;
     delete[] Array;
     Array=newArray;
 }
@@ -1269,6 +1287,7 @@ if(add_table_active==true)
     */
 
     // init second combobox
+    comboBox_column_VIEW=NULL;
     delete comboBox_column_VIEW;
     create_comboBox();
     /************/
@@ -1388,7 +1407,6 @@ if(sumbit_view==true)
     //QRegExp regExp("", Qt::CaseInsensitive, QRegExp::Wildcard);
     //proxy->setFilterRegExp(regExp);
     proxy->setFilterFixedString("");
-
     delete comboBox_column_VIEW;
 
     create_comboBox();

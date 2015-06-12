@@ -9,11 +9,14 @@
 #include "QSpreadsheetHeaderView.h"
 #include "mainwindow.h"
 
-QSpreadsheetHeaderView::QSpreadsheetHeaderView(Qt::Orientation orientation, QWidget * parent)
+QSpreadsheetHeaderView::QSpreadsheetHeaderView(Qt::Orientation orientation, int column_minimum,QWidget * parent)
     : QHeaderView(orientation, parent)
 {
     // Required to refresh button menu when the mouse leave the header.
     setAttribute(Qt::WA_Hover, true);
+
+    columns_min=column_minimum;
+    set_checkbox=false;
 }
 
 void QSpreadsheetHeaderView::mousePressEvent ( QMouseEvent * event )
@@ -23,33 +26,38 @@ void QSpreadsheetHeaderView::mousePressEvent ( QMouseEvent * event )
     int logicalIndex = logicalIndexAt(event->pos());
 
     if (buttonMenuRect(logicalIndex).contains(event->pos())) {
-        QMenu menu(this);
-        QAction *hideCol = menu.addAction("Hide");
-        QAction *sortAZ = menu.addAction("Sort A->Z");
-        QAction *sortZA = menu.addAction("Sort Z->A");
-        QMenu * format= menu.addMenu(tr("&Filter"));
-        QAction *all = format->addAction("All");
-        format->addSeparator();
 
-        QSignalMapper *mapper = new QSignalMapper(this);
-               for(int i = 0; i < model()->columnCount(); i++)
-               {
-                   QAction *others = format->addAction(model()->headerData(i, Qt::Horizontal).toString());
-                   format->addAction(others);
+        if(set_checkbox==false)
+        {
+            menu = new QMenu(this);
+            sortAZ = menu->addAction("Sortuj A->Z");
+            sortZA = menu->addAction("Sortuj Z->A");
+            clear_sort = menu->addAction("Anuluj");
+            menu->addSeparator();
+            hideCol = menu->addAction("Ukryj kolumnę");
+            clear_hideCol = menu->addAction("Odkryj wszystkie");
 
-                   QWidgetAction  * addition = new QWidgetAction(&menu);
-                   checkBox = new QCheckBox(&menu);
-                   checkBox->setText(model()->headerData(i, Qt::Horizontal).toString());
-                   addition->setDefaultWidget(checkBox);
-                   menu.addAction(addition);
-                   mapper->setMapping(addition, i);
-               }
+            mapper = new QSignalMapper(this);
+                   for(int i = 0; i <model()->columnCount(); i++)
+                   {
+                       addition = new QWidgetAction(menu);
+                       checkBox_array[i] = new QCheckBox;
+                       checkBox_array[i]->setText(model()->headerData(i, Qt::Horizontal).toString());
+                       addition->setDefaultWidget(checkBox_array[i]);
+                       connect(checkBox_array[i],SIGNAL(clicked(bool)),this,SLOT(hide_selected_column(bool)));
+                       if(i>=columns_min)checkBox_array[i]->setChecked(true);
+                       menu->addAction(addition);
+                       mapper->setMapping(addition, i);
+                   }
+
+            set_checkbox=true;
+        }
 
         // Disable hide column if only one column remains. Otherwise
         // the gui is no more available to show them back.
         hideCol->setEnabled(hiddenSectionCount() < count() - 1);
 
-        QAction *res = menu.exec(mapToGlobal(event->pos()));
+        QAction *res = menu->exec(mapToGlobal(event->pos()));
 
         if (res == hideCol) {
             hideSection(logicalIndex);
@@ -59,6 +67,9 @@ void QSpreadsheetHeaderView::mousePressEvent ( QMouseEvent * event )
             model()->sort(logicalIndex, Qt::AscendingOrder);
         if (res == sortZA)
             model()->sort(logicalIndex, Qt::DescendingOrder);
+        //if (res == clear_sort)
+        //if (res == clear_hideCol)
+
     }
 
     // Catch previous arrow mouse click.
@@ -73,6 +84,50 @@ void QSpreadsheetHeaderView::mousePressEvent ( QMouseEvent * event )
         updateSection(logicalIndex + 2);
     }
 }
+
+
+
+void QSpreadsheetHeaderView::hide_selected_column(bool checked)
+{
+    QCheckBox * senderCHECK = qobject_cast<QCheckBox *>(this->sender());
+    static bool freeze;
+    QCheckBox * previous_sender;
+
+    for(int i=0;i<23;i++)
+            {
+                if(senderCHECK==checkBox_array[i])
+                {
+                    if(checked==true && freeze==false)
+                    {
+                        hideSection(i);
+                        checkBox_array[i]->setChecked(true);
+                    }
+
+                    if(checked==true && freeze==true)
+                    {
+                        senderCHECK->setEnabled(false);
+                    }
+
+                    else if(checked==false)
+                    {
+                        showSection(i);
+                        checkBox_array[i]->setChecked(false);
+                        if(freeze==true) previous_sender->setEnabled(false);
+                        freeze=false;
+                    }
+
+
+                }
+            }
+
+    qDebug()<<count()-hiddenSectionCount();
+
+    if(count()-hiddenSectionCount()==1)
+        freeze=true;
+
+    previous_sender=senderCHECK;
+}
+
 
 void QSpreadsheetHeaderView::mouseMoveEvent(QMouseEvent * event)
 {
