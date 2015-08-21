@@ -7,26 +7,29 @@ LoginDialog::LoginDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    path=dir.absolutePath();
+
     QFont font("Calibri Light", 16, QFont::Bold ,false);
 
     ui->password_edit->setFont(font);
     ui->login_edit->setFont(font);
 
-    QImage image("C:/Users/rstrawinski/Pictures/sigma_LOGO_3D.png");
+    QImage image(path + "/obrazy/sigma_LOGO_3D.png");
     ui->label_logo->setPixmap(QPixmap::fromImage(image.scaled(250,250,Qt::KeepAspectRatio,Qt::FastTransformation)));
 
-    QImage user("C:/Users/rstrawinski/Pictures/user.png");
+    QImage user(path + "/obrazy/user.png");
     ui->label_user->setPixmap(QPixmap::fromImage(user.scaled(50,50,Qt::KeepAspectRatio,Qt::FastTransformation)));
 
-    QImage password("C:/Users/rstrawinski/Pictures/login.png");
+    QImage password(path + "/obrazy/login.png");
     ui->label_password->setPixmap(QPixmap::fromImage(password.scaled(50,50,Qt::KeepAspectRatio,Qt::FastTransformation)));
 
-    ui->login_edit->setText("root");
-    ui->password_edit->setText("sigmasa");
     ui->password_edit->setEchoMode(QLineEdit::Password);
 
     ui->login_edit->installEventFilter(this);
     ui->password_edit->installEventFilter(this);
+
+    QTimer::singleShot(0,ui->login_edit,SLOT(setFocus()));
+    connect(ui->login_edit,SIGNAL(editingFinished()),ui->password_edit,SLOT(setFocus()));
 }
 
 LoginDialog::~LoginDialog()
@@ -34,39 +37,36 @@ LoginDialog::~LoginDialog()
     delete ui;
 }
 
-/*
- * Login button
-*/
+// [SLOT] - slot when login button pressed
 void LoginDialog::on_login_button_clicked()
 {
     username=ui->login_edit->text();
     password=ui->password_edit->text();
 
-    if (!connection(username,password)) {
+    if (!connection(username,password))
+    {
         QMessageBox::information(this,"Informacja", "Nie uzyskano dostępu.");
         ui->login_edit->setText("");
         ui->password_edit->setText("");
-
+        ui->login_edit->setFocus();
     }
 
-    else {
+    else
+    {
         QMessageBox::information(this,"Informacja","Uzyskano dostęp.");
         emit sendAccess(username,password);
         LoginDialog::accept();
     }
 }
 
-/*
- * Quit button
-*/
+// [SLOT] - slot when quit button pressed
 void LoginDialog::on_quit_button_clicked()
 {
     LoginDialog::reject();
 }
 
-/*
- * eventFilter for QLineEdits to select all
-*/
+
+// eventFilter for QLineEdits to select all
 bool LoginDialog::eventFilter(QObject *obj, QEvent *event)
 {
     if (obj == (QObject*)ui->password_edit)
@@ -79,12 +79,26 @@ bool LoginDialog::eventFilter(QObject *obj, QEvent *event)
             }
     }
 
+    if (event->type() == QEvent::KeyPress)
+       {
+        if(obj == (QObject*)ui->password_edit)
+           {
+               QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+
+               if(keyEvent->key() == Qt::Key_Return)
+               {
+                    on_login_button_clicked();
+               }
+           }
+       }
+
+
+
     if (obj == (QObject*)ui->login_edit)
     {
 
             if (event->type() == QEvent::MouseButtonPress)
             {
-
                 ui->login_edit->selectAll();
                 return true;
             }
@@ -98,7 +112,6 @@ bool LoginDialog::eventFilter(QObject *obj, QEvent *event)
 
     return 0;
 }
-
 
 
 

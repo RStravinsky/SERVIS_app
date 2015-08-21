@@ -69,7 +69,7 @@ font:
   <widget class="QPushButton" name="quit_button">
    <property name="geometry">
     <rect>
-     <x>270</x>
+     <x>30</x>
      <y>410</y>
      <width>211</width>
      <height>61</height>
@@ -93,7 +93,7 @@ font:
   <widget class="QPushButton" name="login_button">
    <property name="geometry">
     <rect>
-     <x>30</x>
+     <x>270</x>
      <y>410</y>
      <width>211</width>
      <height>61</height>
@@ -108,7 +108,7 @@ font:
     </font>
    </property>
    <property name="focusPolicy">
-    <enum>Qt::StrongFocus</enum>
+    <enum>Qt::NoFocus</enum>
    </property>
    <property name="text">
     <string>Zaloguj</string>
@@ -162,6 +162,9 @@ font:
      <height>51</height>
     </rect>
    </property>
+   <property name="focusPolicy">
+    <enum>Qt::ClickFocus</enum>
+   </property>
   </widget>
   <widget class="QLineEdit" name="password_edit">
    <property name="geometry">
@@ -171,6 +174,9 @@ font:
      <width>281</width>
      <height>51</height>
     </rect>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::ClickFocus</enum>
    </property>
   </widget>
  </widget>

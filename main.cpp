@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "logindialog.h"
+#include "qspreadsheetheaderview.h"
 #include <QApplication>
 #include <QMessageBox>
 #include <QSplashScreen>
@@ -10,6 +11,10 @@
 
 int main(int argc, char *argv[])
 {
+
+    QDir dir;
+    QString path=dir.absolutePath();
+
     int currentExitCode = 0;
 
     do
@@ -30,7 +35,7 @@ int main(int argc, char *argv[])
             if(currentExitCode != MainWindow::EXIT_CODE_REBOOT)
             {
                 QSplashScreen * splash = new QSplashScreen;
-                splash->setPixmap(QPixmap("C:/Users/rstrawinski/Pictures/splash.png"));
+                splash->setPixmap(QPixmap(path+"/obrazy/splash.png"));
                 splash->setFont(splash_font);
                 splash->show();
                 splash->showMessage(QObject::tr("Uruchamianie programu "),
@@ -61,7 +66,8 @@ int main(int argc, char *argv[])
                              &w, SLOT(receiveAccess(QString,QString)));
 
 
-            logindialog->setWindowIcon(QIcon("C:/Users/rstrawinski/Pictures/log_icon.png"));
+
+            logindialog->setWindowIcon(QIcon(path+"/obrazy/log_icon.png"));
             logindialog->setWindowTitle("SERWIS - Logowanie");
             logindialog->setFont(font);
             if (logindialog->exec() != QDialog::Accepted) {
@@ -71,7 +77,7 @@ int main(int argc, char *argv[])
                 delete logindialog;
                 w.showMaximized();
                 w.setWindowTitle("SERWIS");
-                w.setWindowIcon(QIcon("C:/Users/rstrawinski/Pictures/services_icon.png"));
+                w.setWindowIcon(QIcon(path+"/obrazy/services_icon.png"));
                 w.setFont(font_main);
                 w.show();
             }

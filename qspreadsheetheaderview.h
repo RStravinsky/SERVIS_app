@@ -7,6 +7,8 @@
 #include <QSignalMapper>
 #include <QWidgetAction>
 #include <QMessageBox>
+#include <QDebug>
+#include "SortFilterProxyModel.h"
 
 /*!
     \class QSpreadsheetHeaderView
@@ -19,10 +21,10 @@ class QSpreadsheetHeaderView : public QHeaderView
     Q_OBJECT
 
 public:
-    QSpreadsheetHeaderView(Qt::Orientation orientation, int column_minimum, QWidget * parent = 0);
-
-    QCheckBox *checkBox_array[23];
+    QSpreadsheetHeaderView(Qt::Orientation orientation, int column_minimum, int column_maximum, QWidget * parent = 0);
+    QAction * actions[23];
     int columns_min;
+    int columns_max;
     bool set_checkbox;
     QMenu * menu;
     QAction *sortAZ;
@@ -30,8 +32,15 @@ public:
     QAction *clear_sort;
     QAction *hideCol;
     QAction *clear_hideCol;
-    QSignalMapper *mapper;
     QWidgetAction  * addition;
+    QAction * previous_sender=NULL;
+    bool freeze;
+    int logicalIndex;
+    bool * checked_columns=NULL;
+    void check_hidden_column();
+
+signals:
+    void sendHiddenColums(bool * ichecked_columns);
 
 protected:
     void mousePressEvent(QMouseEvent * event);
@@ -48,6 +57,9 @@ protected:
     void drawNextButton(QPainter *painter, int logicalIndex) const;
 
 public slots:
+    void action(QAction *action);
+
+private slots:
     void hide_selected_column(bool checked);
 
 private:

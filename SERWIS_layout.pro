@@ -15,11 +15,18 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     logindialog.cpp \
-    qspreadsheetheaderview.cpp
+    qspreadsheetheaderview.cpp \
+    sortfilterproxymodel.cpp \
+    creatordialog.cpp \
+    mysqlrelationaldelegate.cpp
 
 HEADERS  += mainwindow.h \
     logindialog.h \
-    qspreadsheetheaderview.h
+    qspreadsheetheaderview.h \
+    sortfilterproxymodel.h \
+    creatordialog.h \
+    mysqlrelationaldelegate.h
 
 FORMS    += mainwindow.ui \
-    logindialog.ui
+    logindialog.ui \
+    creatordialog.ui

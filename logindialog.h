@@ -7,6 +7,8 @@
 #include <QSql>
 #include <QSqlDatabase>
 #include <QLineEdit>
+#include <QDir>
+#include <QTimer>
 #include "mainwindow.h"
 
 namespace Ui {
@@ -21,10 +23,10 @@ public:
     bool connection(QString& login,QString& password){
         {
             db = QSqlDatabase::addDatabase("QMYSQL");
-            db.setHostName("127.0.0.1");  // host
-            db.setDatabaseName("serwis_v6"); // database
-            db.setUserName(login);        // user
-            db.setPassword(password);     // password
+            db.setHostName("127.0.0.1");     // host
+            db.setDatabaseName("serwis_v8"); // database
+            db.setUserName(login);           // user
+            db.setPassword(password);        // password
 
             if (!db.open()) {
                 return false;
@@ -44,6 +46,8 @@ public:
 public:
     explicit LoginDialog(QWidget *parent = 0);
     ~LoginDialog();
+    QString path;
+    QDir dir;
     QSqlDatabase db;
 
 signals:
