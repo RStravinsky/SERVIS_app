@@ -578,7 +578,7 @@ subcontrol-origin: margin;
 </string>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="page_view">
        <property name="sizePolicy">
@@ -860,6 +860,17 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
               </font>
              </property>
             </item>
+            <item>
+             <property name="text">
+              <string>Zlecenia</string>
+             </property>
+             <property name="font">
+              <font>
+               <family>Calibri Light</family>
+               <pointsize>14</pointsize>
+              </font>
+             </property>
+            </item>
            </widget>
           </item>
           <item>
@@ -951,7 +962,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
 }</string>
             </property>
             <property name="currentIndex">
-             <number>1</number>
+             <number>7</number>
             </property>
             <widget class="QWidget" name="page_MIEJSCA">
              <layout class="QVBoxLayout" name="verticalLayout_2" stretch="2,1,2,6">
@@ -1998,6 +2009,26 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
               </item>
              </layout>
             </widget>
+            <widget class="QWidget" name="page_ZLECENIA">
+             <layout class="QVBoxLayout" name="verticalLayout_7">
+              <item>
+               <widget class="QLabel" name="label_22">
+                <property name="font">
+                 <font>
+                  <family>Calibri Light</family>
+                  <pointsize>12</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>BRAK OPCJI DODATKOWYCH</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
            </widget>
           </item>
          </layout>
@@ -2112,7 +2143,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
              <string>Wielkość liter ma znaczenie</string>
             </property>
             <property name="checked">
-             <bool>true</bool>
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -2718,7 +2749,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
              <string>Wielkość liter ma znaczenie</string>
             </property>
             <property name="checked">
-             <bool>true</bool>
+             <bool>false</bool>
             </property>
            </widget>
           </item>

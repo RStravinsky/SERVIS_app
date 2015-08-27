@@ -23,10 +23,10 @@ public:
     bool connection(QString& login,QString& password){
         {
             db = QSqlDatabase::addDatabase("QMYSQL");
-            db.setHostName("127.0.0.1");     // host
-            db.setDatabaseName("serwis_v8"); // database
-            db.setUserName(login);           // user
-            db.setPassword(password);        // password
+            db.setHostName("192.168.1.7");    // host
+            db.setDatabaseName("serwis_v8");  // database
+            db.setUserName(login);            // user
+            db.setPassword(password);         // password
 
             if (!db.open()) {
                 return false;
@@ -40,7 +40,7 @@ public:
 
     void closeDB(){
         db.close();
-        QSqlDatabase::removeDatabase("serwis_v6");
+        QSqlDatabase::removeDatabase("serwis_v8");
     }
 
 public:
@@ -62,6 +62,7 @@ private:
     bool eventFilter(QObject *obj, QEvent *event);
     QString username;
     QString password;
+    QString User_x;
 };
 
 #endif // LOGINDIALOG_H

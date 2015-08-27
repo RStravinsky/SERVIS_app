@@ -40,6 +40,8 @@
 #include <QDateEdit>
 #include <QClipboard>
 #include <QFileDialog>
+#include <QToolTip>
+#include <QCompleter>
 
 namespace Ui {
 class MainWindow;
@@ -103,6 +105,7 @@ public:
     QSqlTableModel * model_additional=NULL;
     QComboBox * comboBox_column_VIEW=NULL;
     mySqlRelationalDelegate * delegate=NULL;
+    QCompleter * completer=NULL;
 
     /* The maximum number of columns */
     enum KOLUMN_MAX
@@ -115,6 +118,7 @@ public:
         RaportySerwisowe_max=13,
         ZgloszeniaSerwisowe_max=13,
         Czesci_max=8,
+        Zlecenia_max=6,
     };
     KOLUMN_MAX column_max;
 
@@ -129,6 +133,7 @@ public:
         RaportySerwisowe=13,
         ZgloszeniaSerwisowe=13,
         Czesci=8,
+        Zlecenia=6,
     };
     KOLUMN column_const;
 
@@ -144,7 +149,6 @@ public:
         Konkurencja_idx=6,
         Zlecenia_idx=7,
     };
-
 
     QString main_table;
     QString main_view;    
@@ -198,6 +202,8 @@ public slots:
     void receiveAccess(QString login, QString password);
     void info_button();
     void moja(int row, QSqlRecord & record);
+    void create_backup();
+    void showToolTip (const QModelIndex & index);
 
     //VIEW
     void filterRegExpChanged();
@@ -240,7 +246,6 @@ private slots:
     void on_pushButton_submit_filter_ADD_clicked();
     void on_pushButton_clear_filter_ADD_clicked();
 
-
     void on_pushButton_11_clicked();
     void on_comboBox_currentIndexChanged(const QString &arg1);
     void on_comboBox_2_currentIndexChanged(const QString &arg1);
@@ -265,10 +270,6 @@ private:
     Ui::MainWindow *ui;
     bool eventFilter(QObject *obj, QEvent *event);
     void resizeEvent(QResizeEvent* event);
-
-protected:
-   //void keyPressEvent(QKeyEvent* e);
-
 };
 
 #endif // MAINWINDOW_H

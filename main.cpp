@@ -15,6 +15,10 @@ int main(int argc, char *argv[])
     QDir dir;
     QString path=dir.absolutePath();
 
+    QDate data = QDate::currentDate();
+    int DaysInMonths = data.daysInMonth();
+    int ActualDay = data.day();
+
     int currentExitCode = 0;
 
     do
@@ -40,7 +44,6 @@ int main(int argc, char *argv[])
                 splash->show();
                 splash->showMessage(QObject::tr("Uruchamianie programu "),
                                 Qt::AlignLeft | Qt::AlignTop, Qt::black);  //This line represents the alignment of text, color and position
-
 
                 qApp->processEvents();
                 QTimer::singleShot(2000,splash,SLOT(close()));
@@ -80,12 +83,34 @@ int main(int argc, char *argv[])
                 w.setWindowIcon(QIcon(path+"/obrazy/services_icon.png"));
                 w.setFont(font_main);
                 w.show();
+
+                QFile file;
+                QString file_name="AUTO_BACKUP.txt";
+                file.setFileName(file_name);
+                if(!file.exists() && (DaysInMonths-ActualDay)==1){
+
+                    QMessageBox::warning(&w,"Informacja","****************** Do końca miesiąca został 1 dzień! *******************\n"
+                                                         "Wykonany zostanie automatyczny zapis kopii zapasowej bazy danych. \n"
+                                                         "*************************************************************************");
+                    QTimer::singleShot(500,&w,SLOT(create_backup()));
+
+                    qDebug() << "Doesn't exists: "<<file_name;
+                    file.open(QIODevice::ReadWrite | QIODevice::Text);
+                    QTextStream stream(&file);
+                    file.close();
+
+                }else if (file.exists() && (DaysInMonths-ActualDay)!=1){
+                    qDebug() << file_name <<" removing ...";
+                    file.remove();
+                }else if (file.exists() && (DaysInMonths-ActualDay)==1)
+                {
+                    qDebug() << file_name <<" already created ...";
+                }
+
             }
              currentExitCode = a.exec();
      } while( currentExitCode == MainWindow::EXIT_CODE_REBOOT );
 
     return currentExitCode;
 }
-
-
 

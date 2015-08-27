@@ -11,7 +11,6 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     path=dir.absolutePath();
-    //installEventFilter(this);
 
     ui->stackedWidget->setCurrentIndex(0);
 
@@ -166,6 +165,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->comboBox_which_column_ADD_REMOVE, SIGNAL (activated(QString)), this, SLOT (combobox_selected_column_ADD(QString)));
     connect(ui->lineEdit_Filtr_ADD, SIGNAL(textChanged(QString)),
                this, SLOT(filterRegExpChanged_ADD()));
+
+
 }
 
 MainWindow::~MainWindow()
@@ -193,22 +194,42 @@ const QString MainWindow::Zgloszeniaserwisowe_Miejsca_checklist[2]={"Maszyny","M
 
 /* MAIN WINDOW ****************************************************************************/
 
+void MainWindow::create_backup()
+{
+    QString init_path = "//k1/DBIR/Programowanie/Aplikacja SERWIS/Kopia_zapasowa_SERWIS";
+    QString _time=QTime::currentTime().toString();
+    _time.replace(":","_");
+    QUrl filename = init_path;
+    QString path_bu= filename.toString()+"/Serwis_BACKUP_"+QDate::currentDate().toString()+"_"+_time+".sql";
+    path_bu.replace("file:","");
+    if(path_bu.contains(':'))path_bu=path_bu.right(path_bu.size()-3);
+    QString Cmd = QString("mysqldump.exe -u%1 -h%2 -p%3 --routines serwis_v8").arg("root","127.0.0.1","sigmasa");
+    QString Path = QString("%1").arg(path_bu);
+    QProcess poc;
+    poc.setStandardOutputFile(Path);
+    poc.start(Cmd);
+    poc.waitForFinished( 30000 );
+    QMessageBox::information(this,"Informacja", "Kopia zapasowa została zapisana w folderze \n"
+                                                "//k1/DBIR/Programowanie/Aplikacja SERWIS/Kopia_zapasowa_SERWIS");
+}
+
 //reciveAccess() - slot to recive information from login dialog about access
 void MainWindow::receiveAccess(QString login,QString password)
 {
    Statprogress->setValue(100);
-   if(login=="root" && password=="sigmasa")
+   if(login=="root" && password=="Serwis4q@")
    {
        access=true;
        Statlabel->setText("<font color='white'>Połączono jako Admnistrator</font>");
    }
-   else if(login=="serwis" && password=="serwisV1")
+   else if(login=="serwis" && password=="Serwis_V1")
    {
        Statprogress->setValue(50);
        access=false;
        Statlabel->setText("<font color='white'>Połączono jako użytkownik</font>");
        ui->listWidget_ADD->item(3)->setForeground(Qt::green);
        ui->pushButton_10->setEnabled(false);
+       ui->Backupbutton->setEnabled(false);
    }
 }
 
@@ -319,10 +340,15 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
                QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
                QString header_name=ui->tableView_ADD->model()->headerData(ui->tableView_ADD->currentIndex().column(), Qt::Horizontal).toString();
 
-               if(keyEvent->key() == Qt::Key_Return && !header_name.contains("Opis") && !header_name.contains("Link"))
+               if(keyEvent->key() == Qt::Key_Return && !header_name.contains("Opis") && !header_name.contains("Link") && !header_name.contains("Nr zgłoszenia"))
                {
                    ui->tableView_ADD->edit(ui->tableView_ADD->currentIndex());
                }
+
+//               if(keyEvent->key() == Qt::Key_F1)
+//               {
+
+//               }
            }
        }
 
@@ -381,7 +407,7 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 
     }
 
-    if (obj == (QObject*)ui->Backupbutton)
+    if (obj == (QObject*)ui->Backupbutton && access==true)
     {
             if (event->type() == QEvent::HoverEnter)
             {
@@ -400,29 +426,7 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
             {
                 ui->Backupbutton->setIcon(QIcon(path + "/obrazy/backup.png"));
                 ui->Backupbutton->setIconSize(QSize(45, 45));
-
-                QString init_path = "//k1/";
-
-                QUrl filename = QFileDialog::getExistingDirectoryUrl
-                (
-                    this,
-                    tr("Wybierz plik"),
-                    QUrl::fromLocalFile(init_path)
-                );
-
-                if( !filename.isEmpty() )
-                  {
-                    QString path_bu= filename.toString()+"/Serwis_BACKUP_"+QDate::currentDate().toString()+".sql";
-                    path_bu.replace("file:","");
-                    if(path_bu.contains(':'))path_bu=path_bu.right(path_bu.size()-3);
-                    QString Cmd = QString("mysqldump.exe -u%1 -h%2 -p%3 --routines serwis_v8").arg("root","127.0.0.1","sigmasa");
-                    QString Path = QString("%1").arg(path_bu);
-                    QProcess poc;
-                    poc.setStandardOutputFile(Path);
-                    poc.start(Cmd);
-                    poc.waitForFinished( 30000 );
-                  }
-
+                create_backup();
                 return true;
             }
 
@@ -650,7 +654,15 @@ void MainWindow::on_listWidget_VIEW_itemPressed(QListWidgetItem *item)
         column_max = Czesci_max;
         FillArray(dynamic_table, Czesci_checklist, size);
     }
-
+    else if(ui->listWidget_VIEW->item(Zlecenia_idx)==item)
+    {
+        size=0;
+        main_table = "Zlecenia";
+        main_view = "Zlecenia_Widok";
+        column_const=Zlecenia;
+        column_max = Zlecenia_max;
+        //FillArray(dynamic_table, Czesci_checklist, size);
+    }
 
 #if (DEBUG_ACTIVE==true)
     qDebug()<<"Główna tabela: "<<main_table;
@@ -678,6 +690,7 @@ void MainWindow::create_model(QSortFilterProxyModel * _proxy, QSqlTableModel * _
     #endif
     _model->setEditStrategy(QSqlTableModel::OnManualSubmit);
     _model->setTable(_view);
+    if(!editable)_model->setSort(0,Qt::AscendingOrder);
     _model->select();
     if(!editable)set_headers_basic(main_table,*_model);
 
@@ -796,7 +809,7 @@ void MainWindow::create_model_own(CerSimpleDynamics::Models::SortFilterProxyMode
 //[SLOT] - slot which create menu on main table
 void MainWindow::ShowContextMenu(const QPoint& pos)
 { 
-    bool url_active;
+    bool url_active=false;
     #if (DEBUG_ACTIVE==true)
         qDebug()<<"Funkcja ShowContextMenu()";
         qDebug()<<"ADRES myMenu w funkcji ShowContextMenu()"<<myMenu;
@@ -1115,7 +1128,7 @@ void MainWindow::fill_additional_comboboxes(QString _main_table)
         for(int i=0;i<iRows;i++)
         {
            idx_place = tableModel_machine->index(i, 2);
-           idx_order = tableModel_machine->index(i, 6);
+           idx_order = tableModel_machine->index(i, 7);
            str_place = tableModel_machine->data(idx_place,Qt::DisplayRole).toString();
            str_order = tableModel_machine->data(idx_order,Qt::DisplayRole).toString();
            if( !list_place.contains(str_place) && str_place!="" )list_place.append(str_place);
@@ -1607,7 +1620,7 @@ void MainWindow::on_comboBox_3_currentIndexChanged(const QString &arg1)
     int number=0;
         for(int i=0;i<proxy_own->rowCount();i++)
         {
-          if(ui->tableView_VIEW->model()->index(i,6).data().toString()==arg1)
+          if(ui->tableView_VIEW->model()->index(i,7).data().toString()==arg1)
           {
               number++;
           }
@@ -1621,7 +1634,7 @@ void MainWindow::on_comboBox_8_currentIndexChanged(const QString &arg1)
     int number=0;
         for(int i=0;i<proxy_own->rowCount();i++)
         {
-          if(ui->tableView_VIEW->model()->index(i,8).data().toString()==arg1)
+          if(ui->tableView_VIEW->model()->index(i,9).data().toString()==arg1)
           {
               number++;
           }
@@ -1911,6 +1924,7 @@ void MainWindow::on_listWidget_ADD_itemPressed(QListWidgetItem *item)
         rmodel = new QSqlRelationalTableModel(this);
         proxy = new QSortFilterProxyModel(this);
         init_relation_model(rmodel,proxy,main_table,"Maszyny","nrFabryczny_Maszyny");
+        connect (ui->tableView_ADD,SIGNAL(clicked(QModelIndex)),this, SLOT (showToolTip (QModelIndex)));
     }
     else if(ui->listWidget_ADD->item(Zlecenia_idx)==item && access==true)
     {
@@ -1936,6 +1950,34 @@ void MainWindow::on_listWidget_ADD_itemPressed(QListWidgetItem *item)
 #if (DEBUG_ACTIVE==true)
     qDebug()<<"Main table (ADD): "<<main_table<<endl;
 #endif
+}
+
+
+void MainWindow::showToolTip (const QModelIndex & index) {
+
+    if (! index.isValid ()) {
+        return;
+        }
+
+    QString header_name=ui->tableView_ADD->model()->headerData(index.column(), Qt::Horizontal).toString();
+
+    if(header_name.contains("Nr zgłoszenia") && ui->tableView_ADD->model()->data(index).toString()!="")
+    {
+        const QString actual_number=ui->tableView_ADD->model()->data(index).toString();
+        QString text_to_tooltip;
+        int x=0;
+        if(isadded)x=1;
+        for(int i=0;i<rmodel->rowCount()-x;i++)
+        {
+            if(ui->tableView_ADD->model()->index(i,1).data().toString().contains(actual_number))
+            {
+                 text_to_tooltip=text_to_tooltip+ui->tableView_ADD->model()->index(i,1).data().toString()+'\n';
+            }
+        }
+        text_to_tooltip+=actual_number +" ???";
+        QToolTip::showText(QCursor::pos(), text_to_tooltip);
+    }
+
 }
 
 void MainWindow::set_headers_basic(QString _main_table, QSqlTableModel &_model)
@@ -1988,12 +2030,13 @@ void MainWindow::set_headers(QString _main_table,QSqlRelationalTableModel & _mod
         _model.setHeaderData(1, Qt::Horizontal, tr("Maszyna"));
         _model.setHeaderData(2, Qt::Horizontal, tr("Nr fabryczny"));
         _model.setHeaderData(3, Qt::Horizontal, tr("Miejsce"));
-        _model.setHeaderData(4, Qt::Horizontal, tr("Opis"));
-        _model.setHeaderData(5, Qt::Horizontal, tr("Historia Link"));
-        _model.setHeaderData(6, Qt::Horizontal, tr("Nr zlecenia"));
-        _model.setHeaderData(7, Qt::Horizontal, tr("Aktywność"));
-        _model.setHeaderData(8, Qt::Horizontal, tr("Koniec gwarancji"));
-        _model.setHeaderData(9, Qt::Horizontal, tr("Dokumentacja Link"));
+        _model.setHeaderData(4, Qt::Horizontal, tr("Dokumentacja Link"));
+        _model.setHeaderData(5, Qt::Horizontal, tr("Opis"));
+        _model.setHeaderData(6, Qt::Horizontal, tr("Historia Link"));
+        _model.setHeaderData(7, Qt::Horizontal, tr("Nr zlecenia"));
+        _model.setHeaderData(8, Qt::Horizontal, tr("Aktywność"));
+        _model.setHeaderData(9, Qt::Horizontal, tr("Koniec gwarancji"));
+
     }
     else if(_main_table=="Zgloszeniaserwisowe")
     {
@@ -2042,15 +2085,7 @@ void MainWindow::init_relation_model(QSqlRelationalTableModel * _model, QSortFil
     _model->setEditStrategy(QSqlTableModel::OnManualSubmit);
     _model->setTable(tableName);
     _model->setRelation(_model->fieldIndex("id"+rel_tableName+"_"+tableName), QSqlRelation(rel_tableName, "id"+rel_tableName, headerName));
-
-//    qDebug()<<"headerName"<<headerName;
-//    qDebug()<<"column nr"<<_model->fieldIndex("id"+rel_tableName+"_"+tableName);
-//    qDebug()<<_model->relationModel(_model->fieldIndex("id"+rel_tableName+"_"+tableName))->fieldIndex("nrFabryczny_Maszyny");
-
-//    _model->relationModel(_model->fieldIndex("id"+rel_tableName+"_"+tableName))->setSort(
-//          _model->relationModel(_model->fieldIndex("id"+rel_tableName+"_"+tableName))->fieldIndex("Maszyna"), Qt::AscendingOrder);
-    //_model->relationModel(2)->setSort(2,Qt::AscendingOrder);
-    //_model->relationModel(_model->fieldIndex("id"+rel_tableName+"_"+tableName))->setSort(1,Qt::AscendingOrder);
+    _model->setSort(0,Qt::AscendingOrder);
     _model->select();
     set_headers(tableName,*_model);
 
@@ -2063,6 +2098,7 @@ void MainWindow::init_relation_model(QSqlRelationalTableModel * _model, QSortFil
     ui->tableView_ADD->verticalHeader()->setFixedWidth(50);
     ui->tableView_ADD->horizontalHeader()->setFixedHeight(30);
     ui->tableView_ADD->horizontalHeader()->setFont(Font);
+
     for (int col=1; col<_proxy->columnCount(); col++)
     {
       ui->tableView_ADD->setColumnWidth(col,230);
@@ -2095,6 +2131,7 @@ void MainWindow::init_relation_model(QSqlRelationalTableModel * _model, QSortFil
     _model->setTable(tableName);
     _model->setRelation(_model->fieldIndex("id"+rel_tableName+"_"+tableName), QSqlRelation(rel_tableName, "id"+rel_tableName, headerName));
     _model->setRelation(_model->fieldIndex("id"+rel_tableName2+"_"+tableName), QSqlRelation(rel_tableName2, "id"+rel_tableName2, headerName2));
+    _model->setSort(0,Qt::AscendingOrder);
     _model->select();
     set_headers(tableName,*_model);
 
@@ -2241,12 +2278,10 @@ void MainWindow::check_selcted_place(QString data_to_check,bool added=true)
         // podziel miejsca:
         QStringList list = data_to_check.split(",");
         QString przecinek =",";
-        qDebug()<<list;
         for(int j=0;j<list.length();j++)
         {
             y=0;
             list[j].replace(" ","");
-            qDebug()<<list[j];
 
             for(int i=0;i<model_Q.rowCount();i++)
             {
@@ -2691,8 +2726,11 @@ void MainWindow::on_tableView_ADD_clicked(const QModelIndex &index)
 
     if(header_name.contains("Link"))
     {
-            QString init_path = "//k1/";
-            if(header_name=="Historia Link") init_path = "//k1/Serwis/";
+            QString init_path;
+            if(header_name.contains("Historia")) init_path = "//k1/Serwis/Historia";
+            else if(header_name.contains("Dokumentacja")) init_path = "//k1/Konstrukcyjny/Projekty-2/I N S T R U K C J E";
+            else if(header_name.contains("Spis")) init_path = "//k1/Handlowy/Metalika/Specyfikacje";
+            else if(header_name.contains("Harmonogram")) init_path = "//k1/Konstrukcyjny/Projekty-2/Harmonogramy";
 
            QUrl filename = QFileDialog::getOpenFileUrl(
             this,
@@ -2756,22 +2794,26 @@ void MainWindow::on_tableView_ADD_activated(const QModelIndex &index)
 
     if(header_name.contains("Link"))
     {
+            QString init_path;
+            if(header_name.contains("Historia")) init_path = "//k1/Serwis/Historia";
+            else if(header_name.contains("Dokumentacja")) init_path = "//k1/Konstrukcyjny/Projekty-2/I N S T R U K C J E";
+            else if(header_name.contains("Spis")) init_path = "//k1/Handlowy/Metalika/Specyfikacje";
+            else if(header_name.contains("Harmonogram")) init_path = "//k1/Konstrukcyjny/Projekty-2/Harmonogramy";
 
-            QString init_path = "//k1/";
-            if(header_name=="Historia Link") init_path = "//k1/Serwis/";
-
-           QUrl filename = QFileDialog::getOpenFileUrl(
+            QUrl filename = QFileDialog::getOpenFileUrl(
             this,
             tr("Wybierz plik"),
             QUrl::fromLocalFile(init_path),
             tr("Nazwa pliku (*.doc *.docx *.pdf *.xls *.xlsx *.xlm);;Wszystkie (*.*)") );
-           if( !filename.isEmpty() )
+            if( !filename.isEmpty() )
              {
                  QClipboard *clip = QApplication::clipboard();
                  clip->setText(filename.toString());
                  ui->tableView_ADD->model()->setData(ui->tableView_ADD->currentIndex(), QApplication::clipboard()->text() );
              }
      }
+
+
      else if(header_name=="Opis")
      {
           const QString opis=ui->tableView_ADD->model()->data(index).toString();
@@ -2804,7 +2846,7 @@ void MainWindow::on_tableView_ADD_activated(const QModelIndex &index)
               {
                   QString input = description_edit.toPlainText();
                   clip->setText(input);
-                  ui->tableView_ADD->model()->setData(ui->tableView_ADD->currentIndex(), QApplication::clipboard()->text() );
+                  ui->tableView_ADD->model()->setData(ui->tableView_ADD->currentIndex(), QApplication::clipboard()->text());
               }
           else
               {
@@ -2812,5 +2854,6 @@ void MainWindow::on_tableView_ADD_activated(const QModelIndex &index)
                   ui->tableView_ADD->model()->setData(ui->tableView_ADD->currentIndex(), QApplication::clipboard()->text() );
               }
       }
-}
 
+
+}
