@@ -2731,6 +2731,7 @@ void MainWindow::on_tableView_ADD_clicked(const QModelIndex &index)
             else if(header_name.contains("Dokumentacja")) init_path = "//k1/Konstrukcyjny/Projekty-2/I N S T R U K C J E";
             else if(header_name.contains("Spis")) init_path = "//k1/Handlowy/Metalika/Specyfikacje";
             else if(header_name.contains("Harmonogram")) init_path = "//k1/Konstrukcyjny/Projekty-2/Harmonogramy";
+            else if(header_name=="Link") init_path = "//k1/Serwis";
 
            QUrl filename = QFileDialog::getOpenFileUrl(
             this,
@@ -2799,6 +2800,7 @@ void MainWindow::on_tableView_ADD_activated(const QModelIndex &index)
             else if(header_name.contains("Dokumentacja")) init_path = "//k1/Konstrukcyjny/Projekty-2/I N S T R U K C J E";
             else if(header_name.contains("Spis")) init_path = "//k1/Handlowy/Metalika/Specyfikacje";
             else if(header_name.contains("Harmonogram")) init_path = "//k1/Konstrukcyjny/Projekty-2/Harmonogramy";
+            else if(header_name=="Link") init_path = "//k1/Serwis";
 
             QUrl filename = QFileDialog::getOpenFileUrl(
             this,
@@ -2857,3 +2859,4 @@ void MainWindow::on_tableView_ADD_activated(const QModelIndex &index)
 
 
 }
+
