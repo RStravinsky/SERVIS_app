@@ -95,4 +95,4 @@ namespace CerSimpleDynamics
     }
 }
 
-#include "moc_sortfilterproxymodel.cpp"
+//#include "moc_sortfilterproxymodel.cpp"
